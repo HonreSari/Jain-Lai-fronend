@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* 🎨 Jian Lai Night Theme - CSS Variables */
+@theme {
+  /* Light Mode */
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-card: #ffffff;
+  --color-primary: #C41E3A;        /* Crimson Main */
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f5f9;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #C9A227;         /* Antique Gold */
+  --color-border: #e2e8f0;
+  --radius: 0.5rem;
+
+  /* 🌙 Dark Mode (Jian Lai Night) */
+  --color-dark-background: #0A0C10;        /* Ink Black */
+  --color-dark-foreground: #F2F3F5;        /* Paper White */
+  --color-dark-card: #12141A;              /* Shadow Surface */
+  --color-dark-primary: #C41E3A;           /* Crimson */
+  --color-dark-primary-foreground: #ffffff;
+  --color-dark-secondary: #1A1D26;         /* Mist Panel */
+  --color-dark-muted: #1A1D26;
+  --color-dark-muted-foreground: #9CA3AF;  /* Silk Gray */
+  --color-dark-accent: #C9A227;            /* Antique Gold */
+  --color-dark-border: #2A2D3A;            /* Border Ink */
+}
+
+/* Apply dark theme by default */
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-[var(--color-dark-background)] text-[var(--color-dark-foreground)] antialiased;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-dark-background); }
+  ::-webkit-scrollbar-thumb { 
+    background: var(--color-dark-primary); 
+    border-radius: 4px;
+    opacity: 0.4;
+  }
+  ::-webkit-scrollbar-thumb:hover { opacity: 0.6; }
+}
+
+/* 🎨 Custom Utilities for Jian Lai Theme */
+@layer components {
+  .btn-crimson {
+    @apply px-5 py-2.5 rounded-lg border border-[var(--color-dark-primary)] 
+           text-[var(--color-dark-primary)] font-medium
+           hover:bg-[var(--color-dark-primary)] hover:text-white 
+           hover:shadow-[0_0_12px_rgba(196,30,58,0.35)] hover:border-transparent
+           active:scale-[0.98] transition-all duration-300 cursor-pointer;
+  }
+  
+  .panel-glass {
+    @apply bg-[var(--color-dark-card)]/70 backdrop-blur-xl 
+           border border-[var(--color-dark-border)]/40 rounded-2xl shadow-lg;
+  }
+  
+  .card-donghua {
+    @apply bg-[var(--color-dark-card)] rounded-xl overflow-hidden 
+           border border-transparent
+           hover:border-[var(--color-dark-primary)]/50 
+           hover:shadow-[0_8px_24px_rgba(0,0,0,0.7),0_0_16px_rgba(196,30,58,0.15)] 
+           transition-all duration-300;
+  }
+}
