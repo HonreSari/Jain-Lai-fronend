@@ -1,7 +1,6 @@
-// src/components/layout/Navbar.tsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User, LogOut, Menu, X, Sword, SwordIcon } from "lucide-react";
+import { Search, User, LogOut, Menu, X, SwordIcon, Library } from "lucide-react"; // Added Library icon
 import { useAuthStore } from "@/stores/useAuthStore";
 
 export function Navbar() {
@@ -15,7 +14,6 @@ export function Navbar() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // TODO: Implement search navigation
       console.log("Searching:", searchQuery);
     }
   };
@@ -30,7 +28,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <span className="text-2xl text-red-500"> < SwordIcon /> </span>
+          <span className="text-2xl text-red-500"> <SwordIcon /> </span>
           <span className="font-display text-xl font-bold text-[var(--color-dark-primary)] group-hover:text-[var(--color-dark-accent)] transition-colors">
             Sword of Coming
           </span>
@@ -56,16 +54,26 @@ export function Navbar() {
           </div>
         </form>
 
-        {/* Desktop Auth */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* Desktop Auth & Navigation */}
+        <div className="hidden md:flex items-center gap-6">
           {isAuthenticated && user ? (
             <>
-              <span className="text-sm text-[var(--color-dark-muted-foreground)]">
+              {/* My Library Link */}
+              <Link
+                to="/library"
+                className="flex items-center gap-2 text-sm font-medium text-[var(--color-dark-muted-foreground)] hover:text-[var(--color-dark-primary)] transition-colors"
+              >
+                <Library className="w-4 h-4" />
+                My Library
+              </Link>
+
+              <span className="text-sm text-[var(--color-dark-muted-foreground)] border-l border-[var(--color-dark-border)] pl-4">
                 Welcome,{" "}
                 <span className="text-[var(--color-dark-foreground)] font-medium">
                   {user.username}
                 </span>
               </span>
+
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1 px-3 py-1.5 text-sm text-[var(--color-dark-muted-foreground)] 
@@ -87,54 +95,60 @@ export function Navbar() {
           className="md:hidden p-2 text-[var(--color-dark-foreground)] hover:text-[var(--color-dark-primary)]"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
       {/* Mobile Menu */}
-      {
-        mobileMenuOpen && (
-          <div className="md:hidden bg-[var(--color-dark-card)] border-t border-[var(--color-dark-border)]/40 px-4 py-4 space-y-4">
-            <form onSubmit={handleSearch} className="flex items-center">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search..."
-                className="flex-1 px-4 py-2 bg-[var(--color-dark-secondary)] border border-[var(--color-dark-border)] rounded-lg 
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-[var(--color-dark-card)] border-t border-[var(--color-dark-border)]/40 px-4 py-4 space-y-4">
+          <form onSubmit={handleSearch} className="flex items-center">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search..."
+              className="flex-1 px-4 py-2 bg-[var(--color-dark-secondary)] border border-[var(--color-dark-border)] rounded-lg 
                          text-[var(--color-dark-foreground)] placeholder-[var(--color-dark-muted-foreground)]
                          focus:outline-none focus:ring-2 focus:ring-[var(--color-dark-primary)]"
-              />
-            </form>
+            />
+          </form>
 
-            {isAuthenticated && user ? (
-              <div className="flex items-center justify-between">
+          {isAuthenticated && user ? (
+            <div className="space-y-4">
+              <Link
+                to="/library"
+                className="flex items-center gap-2 text-sm font-medium text-[var(--color-dark-foreground)]"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Library className="w-4 h-4 text-[var(--color-dark-primary)]" />
+                My Library
+              </Link>
+
+              <div className="flex items-center justify-between pt-4 border-t border-[var(--color-dark-border)]">
                 <span className="text-sm text-[var(--color-dark-muted-foreground)]">
                   {user.username}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="text-sm text-[var(--color-dark-primary)] hover:underline"
+                  className="text-sm text-[var(--color-dark-primary)] hover:underline flex items-center gap-1"
                 >
+                  <LogOut className="w-4 h-4" />
                   Logout
                 </button>
               </div>
-            ) : (
-              <Link
-                to="/login"
-                className="block w-full text-center btn-crimson"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Login
-              </Link>
-            )}
-          </div>
-        )
-      }
-    </nav >
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="block w-full text-center btn-crimson"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Login
+            </Link>
+          )}
+        </div>
+      )}
+    </nav>
   );
 }
