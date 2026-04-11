@@ -57,7 +57,7 @@ export function DonghuaCard({ series }: DonghuaCardProps) {
         </p>
         <div className="flex items-center justify-between text-xs text-[var(--color-dark-muted-foreground)]">
           <span>{series.totalEpisodes} EP</span>
-          <span>{series.genres[0]}</span>
+          <span>{series.genres[0] || "Unknown"}</span>
         </div>
       </div>
     </Link>

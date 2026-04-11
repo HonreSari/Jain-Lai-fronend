@@ -23,12 +23,20 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
+  user: (() => {
+    try {
+      const savedUser = localStorage.getItem("user_data");
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
+  })(),
   token: localStorage.getItem("jwt_token"),
 
   login: async (username, password) => {
     const { data } = await api.post("/auth/login", { username, password });
     localStorage.setItem("jwt_token", data.token);
+    localStorage.setItem("user_data", JSON.stringify(data.user));
     set({ token: data.token, user: data.user });
   },
 
@@ -39,11 +47,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       password,
     });
     localStorage.setItem("jwt_token", data.token);
+    localStorage.setItem("user_data", JSON.stringify(data.user));
     set({ token: data.token, user: data.user });
   },
 
   logout: () => {
     localStorage.removeItem("jwt_token");
+    localStorage.removeItem("user_data");
     set({ token: null, user: null });
   },
 

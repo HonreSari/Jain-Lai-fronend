@@ -16,6 +16,7 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       localStorage.removeItem("jwt_token")
+      localStorage.removeItem("user_data")
       window.location.href = "/login"
     }
     return Promise.reject(err)

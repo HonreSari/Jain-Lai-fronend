@@ -8,7 +8,7 @@ interface HeroBannerProps {
 }
 
 export function HeroBanner({ series }: HeroBannerProps) {
-  // ✅ Safe navigation: get first episode ID or fallback to series ID
+  // Safe navigation: get first episode ID or fallback to series ID
   const firstEpisodeId = series.seasons?.[0]?.episodes?.[0]?.id;
 
   return (
@@ -17,7 +17,7 @@ export function HeroBanner({ series }: HeroBannerProps) {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${series.bannerUrl || series.coverImageUrl})`,
+          backgroundImage: `url(${series.coverImageUrl})`,
           filter: "brightness(0.6)",
         }}
       />
@@ -62,14 +62,9 @@ export function HeroBanner({ series }: HeroBannerProps) {
             <span>{series.totalEpisodes} Episodes</span>
           </div>
 
-          {/* Description */}
-          <p className="text-[var(--color-dark-muted-foreground)] line-clamp-3 md:line-clamp-4">
-            {series.description}
-          </p>
-
           {/* Actions */}
           <div className="flex flex-wrap gap-3 pt-2">
-            {/* ✅ FIXED: Only show Watch button if we have an episode ID */}
+            {/* Watch button */}
             {firstEpisodeId ? (
               <Link
                 to={`/watch/${firstEpisodeId}`}

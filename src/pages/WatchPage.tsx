@@ -1,7 +1,7 @@
 // src/pages/WatchPage.tsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Play, CheckCircle, Clock } from "lucide-react"; // Added Youtube icon
+import { ArrowLeft, ExternalLink, CheckCircle, Clock } from "lucide-react";
 import api from "@/lib/api";
 import { Navbar } from "@/components/layout/Navbar";
 import type { Episode } from "@/types";
@@ -15,44 +15,47 @@ export default function WatchPage() {
   const [isCompleted, setIsCompleted] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  // 1. Fetch Episode Data
   useEffect(() => {
     const fetchEpisode = async () => {
       try {
-        const { data } = await api.get("/series/1");
-        let foundEp: Episode | undefined;
-        for (const season of data.seasons || []) {
-          foundEp = season.episodes.find((e: Episode) => e.id.toString() === episodeId);
-          if (foundEp) break;
-        }
-
-        if (foundEp) {
-          setEpisode(foundEp);
-        } else {
-          setEpisode({
-            id: Number(episodeId),
-            title: "Demo Episode",
-            episodeNumber: 1,
-            duration: "24m",
-            videoUrl: "https://www.youtube.com/embed/videoseries?list=PLMX26aiIvX5oBwyvcxES9P7OvCtHcPny5"
-          } as Episode);
-        }
+        // ✅ Direct endpoint - returns EpisodeStreamDTO with all fields
+        const { data } = await api.get(`/episodes/${episodeId}`);
+        setEpisode(data);
       } catch (err) {
         console.error("Failed to load episode", err);
+        // ✅ Fallback mock data
+        setEpisode({
+          id: Number(episodeId),
+          title: "Preview Episode",
+          episodeNumber: 1,
+          duration: "24m",
+          videoUrl:
+            "https://www.youtube.com/embed/videoseries?list=PLMX26aiIvX5oBwyvcxES9P7OvCtHcPny5",
+          seriesId: 1,
+          seriesTitle: "Soul Land",
+          coverImageUrl:
+            "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741403/Soul-Land_nydalz.jpg",
+          seasonId: 1,
+          seasonOrder: 1,
+          nextEpisodeId: null,
+          prevEpisodeId: null,
+        });
       } finally {
         setLoading(false);
       }
     };
-    fetchEpisode();
-  }, [episodeId]);
 
+    fetchEpisode();
+  }, [episodeId]); // 2. Save Progress to Backend (60 seconds = preview)
   const saveProgress = async () => {
     if (!episode) return;
     setSaving(true);
     try {
       await api.post("/progress", {
         episodeId: episode.id,
-        watchedDuration: 1440,
-        isCompleted: true
+        watchedDuration: 60, // 1 minute preview
+        isCompleted: true,
       });
       setIsCompleted(true);
     } catch (err) {
@@ -62,83 +65,160 @@ export default function WatchPage() {
     }
   };
 
-  if (loading) return <div className="min-h-screen bg-[var(--color-dark-background)] text-white flex items-center justify-center">Loading Player...</div>;
-  if (!episode) return <div className="min-h-screen bg-[var(--color-dark-background)] text-white flex items-center justify-center">Episode not found</div>;
+  // 3. Build Preview URL (1-minute limit for YouTube Playlist)
+  const getPreviewUrl = (fullUrl: string) => {
+    if (!fullUrl) return "";
+    if (fullUrl.includes("youtube.com/embed")) {
+      const separator = fullUrl.includes("?") ? "&" : "?";
+      return `${fullUrl}${separator}start=0&end=60&rel=0&modestbranding=1`;
+    }
+    return fullUrl;
+  };
 
-  const isYouTube = episode.videoUrl?.includes("youtube") || episode.videoUrl?.includes("youtu.be");
+  // 4. Build Full YouTube URL (for external link)
+  const getFullYouTubeUrl = (embedUrl: string) => {
+    if (!embedUrl) return "https://www.youtube.com";
+    if (embedUrl.includes("/embed/videoseries")) {
+      const listMatch = embedUrl.match(/list=([^&]+)/);
+      if (listMatch) {
+        return `https://www.youtube.com/watch?list=${listMatch[1]}`;
+      }
+    }
+    if (embedUrl.includes("/embed/")) {
+      const videoId = embedUrl.split("/embed/")[1].split("?")[0];
+      return `https://www.youtube.com/watch?v=${videoId}`;
+    }
+    return embedUrl;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[var(--color-dark-background)] text-white flex items-center justify-center">
+        Loading Preview...
+      </div>
+    );
+  }
+
+  if (!episode) {
+    return (
+      <div className="min-h-screen bg-[var(--color-dark-background)] text-white flex items-center justify-center">
+        Episode not found
+      </div>
+    );
+  }
+
+  const previewUrl = getPreviewUrl(episode.videoUrl);
+  const fullYouTubeUrl = getFullYouTubeUrl(episode.videoUrl);
+  const isYouTube = episode.videoUrl?.includes("youtube");
 
   return (
     <div className="min-h-screen bg-[var(--color-dark-background)] flex flex-col">
       <Navbar />
 
       {/* Back Button */}
-      <div className="absolute top-24 left-6 z-20">
+      <div className="absolute top-20 left-4 z-20">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 px-4 py-2 bg-black/40 hover:bg-[var(--color-dark-primary)] text-white rounded-full backdrop-blur-md transition-all border border-white/10"
+          className="flex items-center gap-2 px-4 py-2 bg-black/50 hover:bg-[var(--color-dark-primary)] text-white rounded-full backdrop-blur-md transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
       </div>
 
-      {/* Player Container */}
+      {/* Preview Player */}
       <div className="flex-1 flex items-center justify-center bg-black p-4 pt-24 pb-8">
-        <div className="w-full max-w-6xl aspect-video bg-neutral-900 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-[var(--color-dark-border)] relative">
-          {isYouTube ? (
+        <div className="w-full max-w-6xl aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-[var(--color-dark-border)] relative">
+          {isYouTube && previewUrl ? (
             <iframe
-              src={episode.videoUrl}
+              src={previewUrl}
               className="w-full h-full"
-              allowFullScreen
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
             />
           ) : (
-            <video src={episode.videoUrl} className="w-full h-full" controls autoPlay onEnded={saveProgress} />
+            <div className="w-full h-full flex items-center justify-center text-[var(--color-dark-muted-foreground)]">
+              Preview not available
+            </div>
           )}
+
+          {/* Preview Badge */}
+          <div className="absolute top-4 left-4 px-3 py-1.5 bg-[var(--color-dark-primary)]/90 text-white text-sm font-medium rounded-full backdrop-blur-sm flex items-center gap-2">
+            <Clock className="w-4 h-4" />
+            1-Min Preview
+          </div>
         </div>
       </div>
 
-      {/* Info & Actions */}
-      <div className="max-w-6xl mx-auto w-full px-4 pb-12 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[var(--color-dark-border)] pb-6">
-          <div className="space-y-1">
-            <h1 className="text-3xl font-black tracking-tight text-[var(--color-dark-foreground)]">
-              {episode.title}
-            </h1>
-            <p className="text-[var(--color-dark-muted-foreground)] flex items-center gap-2">
-              <span className="text-[var(--color-dark-primary)] font-bold">EPISODE {episode.episodeNumber}</span>
-              <span>•</span>
-              <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {episode.duration}</span>
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Mark as Watched Button */}
-            <button
-              onClick={saveProgress}
-              disabled={saving || isCompleted}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold transition-all ${isCompleted
-                ? "bg-green-500/10 text-green-500 border border-green-500/20"
-                : "bg-[var(--color-dark-secondary)] text-white border border-[var(--color-dark-border)] hover:border-[var(--color-dark-primary)]"
-                }`}
-            >
-              {isCompleted ? <CheckCircle className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
-              {isCompleted ? "Completed" : "Mark Watched"}
-            </button>
-
-            {/* NEW: Watch on YouTube Button */}
-            {isYouTube && (
-              <a
-                href={episode.videoUrl?.replace("embed/", "watch?v=")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-2.5 bg-[#FF0000] hover:bg-[#CC0000] text-white rounded-xl font-semibold transition-all shadow-lg shadow-red-600/20"
-              >
-                <Play className="w-5 h-5" />
-                Watch on YouTube
-              </a>
-            )}
-          </div>
+      {/* Episode Info + Actions */}
+      <div className="max-w-6xl mx-auto w-full px-4 pb-12 space-y-6">
+        {/* Title & Meta */}
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--color-dark-foreground)]">
+            {episode.title}
+          </h1>
+          <p className="text-[var(--color-dark-muted-foreground)] mt-1">
+            {episode.seriesTitle} • Season {episode.seasonOrder} • Episode{" "}
+            {episode.episodeNumber}
+          </p>
         </div>
+
+        {/* ✅ Next/Prev Navigation (separate section, fixed layout) */}
+        <div className="flex justify-between pt-2">
+          {episode.prevEpisodeId ? (
+            <Link
+              to={`/watch/${episode.prevEpisodeId}`}
+              className="px-4 py-2 bg-[var(--color-dark-secondary)] hover:bg-[var(--color-dark-secondary)]/80 rounded-lg text-[var(--color-dark-foreground)] transition-colors"
+            >
+              ← Previous
+            </Link>
+          ) : (
+            <button
+              disabled
+              className="px-4 py-2 bg-[var(--color-dark-secondary)]/50 rounded-lg text-[var(--color-dark-muted-foreground)] cursor-not-allowed"
+            >
+              ← Previous
+            </button>
+          )}
+
+          {episode.nextEpisodeId ? (
+            <Link
+              to={`/watch/${episode.nextEpisodeId}`}
+              className="px-4 py-2 bg-[var(--color-dark-primary)] hover:bg-[var(--color-dark-primary)]/80 rounded-lg text-white transition-colors"
+            >
+              Next →
+            </Link>
+          ) : (
+            <button
+              disabled
+              className="px-4 py-2 bg-[var(--color-dark-primary)]/50 rounded-lg text-white/50 cursor-not-allowed"
+            >
+              Next →
+            </button>
+          )}
+        </div>
+
+        {/* Description Placeholder */}
+        <p className="text-[var(--color-dark-muted-foreground)] leading-relaxed">
+          This is a 1-minute preview. Continue watching the full episode on
+          YouTube.
+        </p>
+
+        {/* Watch Full Episode Button */}
+        <a
+          href={fullYouTubeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-crimson inline-flex items-center justify-center gap-2 w-full md:w-auto"
+        >
+          <ExternalLink className="w-4 h-4" />
+          Watch Full Episode on YouTube
+        </a>
+
+        {/* Helpful Note */}
+        <p className="text-xs text-[var(--color-dark-muted-foreground)] text-center">
+          Clicking above will open YouTube in a new tab. Support the creators by
+          watching on their official channel! 🎌
+        </p>
       </div>
     </div>
   );
