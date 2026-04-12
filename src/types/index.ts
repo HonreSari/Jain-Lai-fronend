@@ -87,7 +87,6 @@ export interface EpisodeListItemDTO {
 
 // ✅ Keep existing SeriesListDTO (already correct)
 export interface SeriesListDTO {
-  "@class"?: string;
   id: number;
   title: string;
   chineseTitle: string;

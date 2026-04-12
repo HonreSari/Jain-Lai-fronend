@@ -13,6 +13,7 @@ import {
 import { Navbar } from "@/components/layout/Navbar";
 import { useAuthStore } from "@/stores/useAuthStore";
 import api from "@/lib/api";
+import { libraryService } from "@/lib/api.service";
 import type { SeriesDetailDTO, SeasonDTO, SeriesListDTO } from "@/types";
 
 export default function SeriesDetail() {
@@ -40,11 +41,9 @@ export default function SeriesDetail() {
         setSeries(data);
 
         // ✅ Check library status using efficient /check endpoint
-        if (isAuthenticated && token) {
+        if (isAuthenticated() && token) {
           try {
-            const { data: isCurrentlyInLibrary } = await api.get<boolean>(
-              `/library/${id}/check`,
-            );
+            const isCurrentlyInLibrary = await libraryService.checkInLibrary(Number(id));
             setInLibrary(isCurrentlyInLibrary);
           } catch (err) {
             console.warn("Could not check library status", err);
@@ -61,7 +60,7 @@ export default function SeriesDetail() {
 
   // ✅ Toggle library status - matches backend endpoints exactly
   const toggleLibrary = async () => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setLibraryMessage("Please login to save to library");
       setTimeout(() => setLibraryMessage(null), 3000);
       return;
@@ -73,12 +72,12 @@ export default function SeriesDetail() {
     try {
       if (inLibrary) {
         // ✅ DELETE /api/v1/library/{seriesId}
-        await api.delete(`/library/${id}`);
+        await libraryService.removeFromLibrary(Number(id));
         setInLibrary(false);
         setLibraryMessage("✅ Removed from library");
       } else {
         // ✅ POST /api/v1/library/{seriesId} - returns SeriesListDTO
-        await api.post<SeriesListDTO>(`/library/${id}`);
+        await libraryService.addToLibrary(Number(id));
         setInLibrary(true);
         setLibraryMessage("✅ Added to library!");
       }
