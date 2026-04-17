@@ -96,3 +96,16 @@ export interface SeriesListDTO {
   totalEpisodes: number;
   genres: string[];
 }
+export interface UserProgress {
+  id: number;
+  episodeId: number;
+  episodeTitle: string;
+  episodeNumber: number;
+  seriesId: number;
+  seriesTitle: string;
+  coverImageUrl: string;
+  watchedDuration: number;
+  totalDuration: number;
+  isCompleted: boolean;
+  lastWatchedAt: string;
+}

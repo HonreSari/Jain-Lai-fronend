@@ -70,4 +70,12 @@
            hover:shadow-[0_8px_24px_rgba(0,0,0,0.7),0_0_16px_rgba(196,30,58,0.15)] 
            transition-all duration-300;
   }
+
+  .progress-ink {
+    @apply h-1.5 w-full bg-[var(--color-dark-border)] rounded-full overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-[var(--color-dark-primary)] transition-all duration-500;
+  }
 }

@@ -75,7 +75,7 @@ export interface CheckLibraryResponse {
 
 export interface UserProgressRequest {
   episodeId: number
-  progress: number
+  watchedDuration: number
   isCompleted: boolean
 }
 
@@ -83,7 +83,13 @@ export interface UserProgress {
   id: number
   userId: number
   episodeId: number
-  progress: number
+  episodeTitle: string
+  episodeNumber: number
+  seriesId: number
+  seriesTitle: string
+  coverImageUrl: string
+  watchedDuration: number
+  totalDuration: number
   isCompleted: boolean
   lastWatchedAt: string
 }

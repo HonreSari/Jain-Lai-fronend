@@ -5,7 +5,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { Navbar } from "@/components/layout/Navbar";
 import { DonghuaCard } from "@/components/shared/DonghuaCard";
 import api from "@/lib/api";
-import type { Series } from "@/types";
+import type { Series, UserProgress } from "@/types";
 import { BookOpen, Clock, Heart, Loader2 } from "lucide-react";
 
 type Tab = "favorites" | "history";
@@ -16,7 +16,7 @@ export default function LibraryPage() {
 
   const [activeTab, setActiveTab] = useState<Tab>("favorites");
   const [favorites, setFavorites] = useState<Series[]>([]);
-  const [history, setHistory] = useState<any[]>([]); // Progress items
+  const [history, setHistory] = useState<UserProgress[]>([]); // Progress items
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,7 +33,7 @@ export default function LibraryPage() {
         setFavorites(libRes.data);
 
         // Fetch watch history (progress)
-        const progRes = await api.get<any[]>("/progress");
+        const progRes = await api.get<UserProgress[]>("/progress");
         setHistory(progRes.data);
       } catch (err) {
         setError("Failed to load library data");
@@ -189,7 +189,7 @@ function EmptyState({
 }
 
 // History Item Component
-function HistoryItem({ progress }: { progress: any }) {
+function HistoryItem({ progress }: { progress: UserProgress }) {
   const navigate = useNavigate();
 
   // Calculate progress percentage

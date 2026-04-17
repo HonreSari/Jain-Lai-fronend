@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink, CheckCircle, Clock } from "lucide-react";
 import api from "@/lib/api";
+import { progressService } from "@/lib/api.service";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { Navbar } from "@/components/layout/Navbar";
 import type { Episode } from "@/types";
 
 export default function WatchPage() {
   const { episodeId } = useParams<{ episodeId: string }>();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
   const [episode, setEpisode] = useState<Episode | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,12 +50,14 @@ export default function WatchPage() {
     };
 
     fetchEpisode();
-  }, [episodeId]); // 2. Save Progress to Backend (60 seconds = preview)
+  }, [episodeId]);
+
+  // 2. Save Progress to Backend (60 seconds = preview)
   const saveProgress = async () => {
     if (!episode) return;
     setSaving(true);
     try {
-      await api.post("/progress", {
+      await progressService.saveProgress({
         episodeId: episode.id,
         watchedDuration: 60, // 1 minute preview
         isCompleted: true,
@@ -64,6 +69,13 @@ export default function WatchPage() {
       setSaving(false);
     }
   };
+
+  // ✅ Auto-save progress once episode is loaded
+  useEffect(() => {
+    if (episode && !loading && isAuthenticated()) {
+      saveProgress();
+    }
+  }, [episode, loading, isAuthenticated]);
 
   // 3. Build Preview URL (1-minute limit for YouTube Playlist)
   const getPreviewUrl = (fullUrl: string) => {

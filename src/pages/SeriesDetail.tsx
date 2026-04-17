@@ -38,12 +38,28 @@ export default function SeriesDetail() {
       try {
         // ✅ Fetch series detail
         const { data } = await api.get<SeriesDetailDTO>(`/series/${id}`);
-        setSeries(data);
+
+        // ✅ Sort seasons and episodes client-side BEFORE setting state
+        const sortedSeries: SeriesDetailDTO = {
+          ...data,
+          seasons: data.seasons
+            .sort((a, b) => a.seasonOrder - b.seasonOrder) // Sort seasons by order
+            .map((season) => ({
+              ...season,
+              episodes: season.episodes.sort(
+                (a, b) => a.episodeNumber - b.episodeNumber,
+              ), // Sort episodes by number
+            })),
+        };
+
+        setSeries(sortedSeries); // ✅ Set the sorted data
 
         // ✅ Check library status using efficient /check endpoint
         if (isAuthenticated() && token) {
           try {
-            const isCurrentlyInLibrary = await libraryService.checkInLibrary(Number(id));
+            const isCurrentlyInLibrary = await libraryService.checkInLibrary(
+              Number(id),
+            );
             setInLibrary(isCurrentlyInLibrary);
           } catch (err) {
             console.warn("Could not check library status", err);
@@ -56,9 +72,8 @@ export default function SeriesDetail() {
       }
     };
     fetchDetail();
-  }, [id, isAuthenticated, token]);
+  }, [id, isAuthenticated, token]); // ✅ Toggle library status - matches backend endpoints exactly
 
-  // ✅ Toggle library status - matches backend endpoints exactly
   const toggleLibrary = async () => {
     if (!isAuthenticated()) {
       setLibraryMessage("Please login to save to library");
