@@ -257,19 +257,19 @@ export default function SeriesDetail() {
             </div>
 
             {/* Episode Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2">
               {activeSeason?.episodes?.map((ep) => (
                 <Link
                   key={ep.id}
                   to={`/watch/${ep.id}`}
-                  className="group aspect-square bg-[var(--color-dark-secondary)] rounded-lg border border-[var(--color-dark-border)] 
-                             hover:border-[var(--color-dark-primary)] hover:shadow-[0_0_12px_rgba(196,30,58,0.3)] transition-all flex flex-col items-center justify-center p-3 text-center"
+                  className="group bg-[var(--color-dark-secondary)] rounded-md border border-[var(--color-dark-border)] 
+                             hover:border-[var(--color-dark-primary)] hover:shadow-[0_0_10px_rgba(196,30,58,0.2)] transition-all flex flex-col items-center justify-center py-2 px-1 text-center"
                 >
-                  <span className="text-lg font-bold text-[var(--color-dark-foreground)] group-hover:text-[var(--color-dark-primary)]">
-                    EP {ep.episodeNumber}
+                  <span className="text-sm font-bold text-[var(--color-dark-foreground)] group-hover:text-[var(--color-dark-primary)]">
+                    {ep.episodeNumber}
                   </span>
-                  <span className="text-xs text-[var(--color-dark-muted-foreground)] mt-1 line-clamp-1">
-                    {ep.title}
+                  <span className="text-[10px] text-[var(--color-dark-muted-foreground)] mt-0.5 line-clamp-1">
+                    EP
                   </span>
                 </Link>
               ))}

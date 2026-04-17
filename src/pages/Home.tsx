@@ -6,8 +6,19 @@ import { SeriesGrid } from "@/components/home/SeriesGrid";
 import api from "@/lib/api";
 import type { Series } from "@/types";
 
+const GENRES = [
+  "Action",
+  "Adventure",
+  "Fantasy",
+  "Cultivation",
+  "Martial Arts",
+  "Romance",
+  "Historical",
+];
+
 export default function Home() {
   const [featured, setFeatured] = useState<Series | null>(null);
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -35,16 +46,60 @@ export default function Home() {
       <main className="pt-16">
         {featured && <HeroBanner series={featured} />}
 
+        {/* Genre Filter */}
+        <section className="pt-8 px-4 overflow-x-auto">
+          <div className="max-w-7xl mx-auto flex items-center gap-3">
+            <button
+              onClick={() => setSelectedGenre(null)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
+                ${
+                  selectedGenre === null
+                    ? "bg-[var(--color-dark-primary)] text-white shadow-[0_0_12px_rgba(196,30,58,0.3)]"
+                    : "bg-[var(--color-dark-secondary)] text-[var(--color-dark-muted-foreground)] hover:bg-[var(--color-dark-secondary)]/80"
+                }`}
+            >
+              All
+            </button>
+            {GENRES.map((genre) => (
+              <button
+                key={genre}
+                onClick={() => setSelectedGenre(genre)}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
+                  ${
+                    selectedGenre === genre
+                      ? "bg-[var(--color-dark-primary)] text-white shadow-[0_0_12px_rgba(196,30,58,0.3)]"
+                      : "bg-[var(--color-dark-secondary)] text-[var(--color-dark-muted-foreground)] hover:bg-[var(--color-dark-secondary)]/80"
+                  }`}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
+        </section>
+
         <div className="space-y-8">
-          <SeriesGrid
-            title="🔥 Trending Now"
-            endpoint="/series?page=0&size=12"
-          />
-          <SeriesGrid
-            title="🆕 Recently Updated"
-            endpoint="/series?page=0&size=12"
-          />
-          <SeriesGrid title="⭐ Top Rated" endpoint="/series?page=0&size=12" />
+          {selectedGenre ? (
+            <SeriesGrid
+              key={selectedGenre}
+              title={`✨ ${selectedGenre} Series`}
+              endpoint={`/series?page=0&size=24&genre=${selectedGenre}`}
+            />
+          ) : (
+            <>
+              <SeriesGrid
+                title="🔥 Trending Now"
+                endpoint="/series?page=0&size=12"
+              />
+              <SeriesGrid
+                title="🆕 Recently Updated"
+                endpoint="/series?page=0&size=12"
+              />
+              <SeriesGrid
+                title="⭐ Top Rated"
+                endpoint="/series?page=0&size=12"
+              />
+            </>
+          )}
         </div>
       </main>
 

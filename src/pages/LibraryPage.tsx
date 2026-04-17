@@ -34,7 +34,18 @@ export default function LibraryPage() {
 
         // Fetch watch history (progress)
         const progRes = await api.get<UserProgress[]>("/progress");
-        setHistory(progRes.data);
+        
+        // ✅ Deduplicate: Only keep the latest entry for each series
+        const uniqueHistory = progRes.data.reduce((acc: UserProgress[], current) => {
+          const x = acc.find(item => item.seriesId === current.seriesId);
+          if (!x) {
+            return acc.concat([current]);
+          } else {
+            return acc;
+          }
+        }, []);
+
+        setHistory(uniqueHistory);
       } catch (err) {
         setError("Failed to load library data");
         console.error(err);
@@ -195,7 +206,9 @@ function HistoryItem({ progress }: { progress: UserProgress }) {
   // Calculate progress percentage
   const totalDuration = progress.totalDuration || 1440; // 24 min default
   const watched = progress.watchedDuration || 0;
-  const percent = Math.min(100, Math.round((watched / totalDuration) * 100));
+  const percent = progress.isCompleted 
+    ? 100 
+    : Math.min(100, Math.round((watched / totalDuration) * 100));
 
   return (
     <div

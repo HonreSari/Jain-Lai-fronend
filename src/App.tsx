@@ -12,6 +12,7 @@ import Home from "@/pages/Home";
 import AuthPage from "@/pages/AuthPage";
 import SeriesDetail from "@/pages/SeriesDetail";
 import WatchPage from "@/pages/WatchPage"; // ✅ Import WatchPage
+import SearchPage from "@/pages/SearchPage";
 import { useEffect } from "react";
 import LibraryPage from "./pages/LibraryPage";
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/series/:id" element={<SeriesDetail />} />
         <Route path="/watch/:episodeId" element={<WatchPage />} />{" "}
         {/* ✅ Route added */}
+        <Route path="/search" element={<SearchPage />} />
         <Route
           path="/library"
           element={

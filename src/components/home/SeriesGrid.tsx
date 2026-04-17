@@ -16,6 +16,7 @@ export function SeriesGrid({ title, endpoint }: SeriesGridProps) {
 
   useEffect(() => {
     const fetchSeries = async () => {
+      setLoading(true);
       try {
         const { data } = await api.get<PageResponse<Series>>(endpoint);
         setSeries(data.content);

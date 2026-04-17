@@ -1,5 +1,5 @@
 // src/pages/WatchPage.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink, CheckCircle, Clock } from "lucide-react";
 import api from "@/lib/api";
@@ -17,11 +17,13 @@ export default function WatchPage() {
   const [loading, setLoading] = useState(true);
   const [isCompleted, setIsCompleted] = useState(false);
   const [saving, setSaving] = useState(false);
+  const hasSaved = useRef<string | null>(null);
 
   // 1. Fetch Episode Data
   useEffect(() => {
     const fetchEpisode = async () => {
       try {
+        hasSaved.current = null;
         // ✅ Direct endpoint - returns EpisodeStreamDTO with all fields
         const { data } = await api.get(`/episodes/${episodeId}`);
         setEpisode(data);
@@ -72,10 +74,16 @@ export default function WatchPage() {
 
   // ✅ Auto-save progress once episode is loaded
   useEffect(() => {
-    if (episode && !loading && isAuthenticated()) {
+    if (
+      episode &&
+      !loading &&
+      isAuthenticated() &&
+      hasSaved.current !== episodeId
+    ) {
+      hasSaved.current = episodeId || null;
       saveProgress();
     }
-  }, [episode, loading, isAuthenticated]);
+  }, [episode, loading, isAuthenticated, episodeId]);
 
   // 3. Build Preview URL (1-minute limit for YouTube Playlist)
   const getPreviewUrl = (fullUrl: string) => {

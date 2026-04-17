@@ -11,10 +11,21 @@ export function Navbar() {
   const isAuthenticated = checkAuth();
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    
+    if (value.trim()) {
+      navigate(`/search?q=${encodeURIComponent(value)}`);
+    } else if (window.location.pathname === "/search") {
+      navigate("/search"); // Clear search results if on search page
+    }
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      console.log("Searching:", searchQuery);
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
@@ -36,21 +47,22 @@ export function Navbar() {
 
         {/* Desktop Search */}
         <form
-          onSubmit={handleSearch}
+          onSubmit={handleSearchSubmit}
           className="hidden md:flex items-center flex-1 max-w-md mx-8"
         >
-          <div className="relative w-full">
+          <div className="relative w-full group">
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               placeholder="Search donghua..."
               className="w-full px-4 py-2 pl-10 bg-[var(--color-dark-secondary)] border border-[var(--color-dark-border)] rounded-lg 
                          text-[var(--color-dark-foreground)] placeholder-[var(--color-dark-muted-foreground)]
-                         focus:outline-none focus:ring-2 focus:ring-[var(--color-dark-primary)] focus:border-transparent
+                         focus:outline-none focus:ring-2 focus:ring-[var(--color-dark-primary)]/50 focus:border-[var(--color-dark-primary)]
+                         focus:shadow-[0_0_15px_rgba(196,30,58,0.2)]
                          transition-all"
             />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-dark-muted-foreground)]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-dark-muted-foreground)] group-focus-within:text-[var(--color-dark-primary)] transition-colors" />
           </div>
         </form>
 
@@ -102,11 +114,11 @@ export function Navbar() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[var(--color-dark-card)] border-t border-[var(--color-dark-border)]/40 px-4 py-4 space-y-4">
-          <form onSubmit={handleSearch} className="flex items-center">
+          <form onSubmit={handleSearchSubmit} className="flex items-center">
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               placeholder="Search..."
               className="flex-1 px-4 py-2 bg-[var(--color-dark-secondary)] border border-[var(--color-dark-border)] rounded-lg 
                          text-[var(--color-dark-foreground)] placeholder-[var(--color-dark-muted-foreground)]

@@ -33,9 +33,14 @@ export const authService = {
 
 // ==================== Series Service ====================
 export const seriesService = {
-  getAll: async (page = 0, size = 12): Promise<PaginatedResponse<Series>> => {
+  getAll: async (
+    page = 0,
+    size = 12,
+    query?: string,
+    genre?: string,
+  ): Promise<PaginatedResponse<Series>> => {
     const response = await api.get<PaginatedResponse<Series>>("/series", {
-      params: { page, size },
+      params: { page, size, query, genre },
     });
     return response.data;
   },
