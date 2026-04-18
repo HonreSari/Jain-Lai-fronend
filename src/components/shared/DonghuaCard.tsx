@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Play } from "lucide-react";
 import type { Series } from "@/types";
+import { getGenreColor } from "@/lib/genre-colors";
 
 interface DonghuaCardProps {
   series: Series;
@@ -55,9 +56,15 @@ export function DonghuaCard({ series }: DonghuaCardProps) {
         <p className="text-sm text-[var(--color-dark-muted-foreground)] truncate">
           {series.chineseTitle}
         </p>
-        <div className="flex items-center justify-between text-xs text-[var(--color-dark-muted-foreground)]">
-          <span>{series.totalEpisodes} EP</span>
-          <span>{series.genres[0] || "Unknown"}</span>
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-[var(--color-dark-muted-foreground)]">{series.totalEpisodes} EP</span>
+          {series.genres?.[0] ? (
+            <span className={`px-2 py-0.5 border rounded-md font-medium ${getGenreColor(series.genres[0]).bg} ${getGenreColor(series.genres[0]).text} ${getGenreColor(series.genres[0]).border}`}>
+              {series.genres[0]}
+            </span>
+          ) : (
+            <span className="text-[var(--color-dark-muted-foreground)]">Unknown</span>
+          )}
         </div>
       </div>
     </Link>

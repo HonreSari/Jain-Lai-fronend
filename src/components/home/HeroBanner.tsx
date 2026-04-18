@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Play, Info } from "lucide-react";
 import type { Series } from "@/types";
+import { getGenreColor } from "@/lib/genre-colors";
 
 interface HeroBannerProps {
   series: Series;
@@ -30,14 +31,17 @@ export function HeroBanner({ series }: HeroBannerProps) {
         <div className="max-w-2xl space-y-4">
           {/* Genres */}
           <div className="flex flex-wrap gap-2">
-            {series.genres?.slice(0, 3).map((genre) => (
-              <span
-                key={genre}
-                className="px-3 py-1 text-xs font-medium bg-[var(--color-dark-primary)]/20 text-[var(--color-dark-primary)] border border-[var(--color-dark-primary)]/30 rounded-full"
-              >
-                {genre}
-              </span>
-            ))}
+            {series.genres?.slice(0, 3).map((genre) => {
+              const colors = getGenreColor(genre);
+              return (
+                <span
+                  key={genre}
+                  className={`px-3 py-1 text-xs border rounded-full font-medium transition-colors ${colors.bg} ${colors.text} ${colors.border}`}
+                >
+                  {genre}
+                </span>
+              );
+            })}
           </div>
 
           {/* Title */}

@@ -40,7 +40,7 @@ export const seriesService = {
     genre?: string,
   ): Promise<PaginatedResponse<Series>> => {
     const response = await api.get<PaginatedResponse<Series>>("/series", {
-      params: { page, size, query, genre },
+      params: { page, size, q: query, genre },
     });
     return response.data;
   },

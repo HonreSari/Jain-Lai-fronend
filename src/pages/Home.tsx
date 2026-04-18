@@ -5,6 +5,7 @@ import { HeroBanner } from "@/components/home/HeroBanner";
 import { SeriesGrid } from "@/components/home/SeriesGrid";
 import api from "@/lib/api";
 import type { Series } from "@/types";
+import { getGenreColor } from "@/lib/genre-colors";
 
 const GENRES = [
   "Action",
@@ -60,20 +61,24 @@ export default function Home() {
             >
               All
             </button>
-            {GENRES.map((genre) => (
-              <button
-                key={genre}
-                onClick={() => setSelectedGenre(genre)}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
-                  ${
-                    selectedGenre === genre
-                      ? "bg-[var(--color-dark-primary)] text-white shadow-[0_0_12px_rgba(196,30,58,0.3)]"
-                      : "bg-[var(--color-dark-secondary)] text-[var(--color-dark-muted-foreground)] hover:bg-[var(--color-dark-secondary)]/80"
-                  }`}
-              >
-                {genre}
-              </button>
-            ))}
+            {GENRES.map((genre) => {
+              const colors = getGenreColor(genre);
+              const isSelected = selectedGenre === genre;
+              return (
+                <button
+                  key={genre}
+                  onClick={() => setSelectedGenre(genre)}
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap border
+                    ${
+                      isSelected
+                        ? `${colors.bg} ${colors.text} ${colors.border} shadow-md`
+                        : "bg-[var(--color-dark-secondary)] text-[var(--color-dark-muted-foreground)] border-transparent hover:bg-[var(--color-dark-secondary)]/80"
+                    }`}
+                >
+                  {genre}
+                </button>
+              );
+            })}
           </div>
         </section>
 

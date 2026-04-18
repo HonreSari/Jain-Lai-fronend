@@ -15,6 +15,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import api from "@/lib/api";
 import { libraryService } from "@/lib/api.service";
 import type { SeriesDetailDTO, SeasonDTO, SeriesListDTO } from "@/types";
+import { getGenreColor } from "@/lib/genre-colors";
 
 export default function SeriesDetail() {
   const { id } = useParams<{ id: string }>();
@@ -145,14 +146,17 @@ export default function SeriesDetail() {
           <div className="space-y-4 max-w-2xl">
             {/* Genres */}
             <div className="flex flex-wrap gap-2">
-              {series.genres?.map((g) => (
-                <span
-                  key={g}
-                  className="px-3 py-1 text-xs bg-[var(--color-dark-primary)]/20 text-[var(--color-dark-primary)] border border-[var(--color-dark-primary)]/30 rounded-full"
-                >
-                  {g}
-                </span>
-              ))}
+              {series.genres?.map((g) => {
+                const colors = getGenreColor(g);
+                return (
+                  <span
+                    key={g}
+                    className={`px-3 py-1 text-xs border rounded-full font-medium transition-colors ${colors.bg} ${colors.text} ${colors.border}`}
+                  >
+                    {g}
+                  </span>
+                );
+              })}
             </div>
 
             {/* Title */}
