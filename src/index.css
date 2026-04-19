@@ -28,54 +28,127 @@
   --color-dark-border: #2A2D3A;            /* Border Ink */
 }
 
-/* Apply dark theme by default */
+/* ✅ Theme Switching Logic */
+/* Default to dark (Jian Lai Night) */
+:root {
+  --color-background: var(--color-dark-background);
+  --color-foreground: var(--color-dark-foreground);
+  --color-card: var(--color-dark-card);
+  --color-primary: var(--color-dark-primary);
+  --color-primary-foreground: var(--color-dark-primary-foreground);
+  --color-secondary: var(--color-dark-secondary);
+  --color-muted: var(--color-dark-muted);
+  --color-muted-foreground: var(--color-dark-muted-foreground);
+  --color-accent: var(--color-dark-accent);
+  --color-border: var(--color-dark-border);
+}
+
+/* ✅ Light theme - Applied when data-theme="light" */
+[data-theme="light"] {
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-card: #ffffff;
+  --color-primary: #C41E3A;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f5f9;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #C9A227;
+  --color-border: #e2e8f0;
+}
+
+/* ✅ Dark theme explicitly (Jian Lai Night) */
+[data-theme="dark"] {
+  --color-background: var(--color-dark-background);
+  --color-foreground: var(--color-dark-foreground);
+  --color-card: var(--color-dark-card);
+  --color-primary: var(--color-dark-primary);
+  --color-primary-foreground: var(--color-dark-primary-foreground);
+  --color-secondary: var(--color-dark-secondary);
+  --color-muted: var(--color-dark-muted);
+  --color-muted-foreground: var(--color-dark-muted-foreground);
+  --color-accent: var(--color-dark-accent);
+  --color-border: var(--color-dark-border);
+}
+
+/* ✅ Smooth transitions for theme changes */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* ✅ Update base layer to use dynamic variables */
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: dark; /* Will be updated by JS */
   }
   body {
-    @apply bg-[var(--color-dark-background)] text-[var(--color-dark-foreground)] antialiased;
+    @apply bg-[var(--color-background)] text-[var(--color-foreground)] antialiased;
     font-family: system-ui, -apple-system, sans-serif;
   }
-  /* Custom scrollbar */
+  
+  /* Update scrollbar for both themes */
   ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: var(--color-dark-background); }
+  ::-webkit-scrollbar-track { 
+    background: var(--color-background); 
+  }
   ::-webkit-scrollbar-thumb { 
-    background: var(--color-dark-primary); 
+    background: var(--color-primary); 
     border-radius: 4px;
     opacity: 0.4;
   }
   ::-webkit-scrollbar-thumb:hover { opacity: 0.6; }
 }
 
-/* 🎨 Custom Utilities for Jian Lai Theme */
+/* ✅ Update components to use dynamic variables */
 @layer components {
   .btn-crimson {
-    @apply px-5 py-2.5 rounded-lg border border-[var(--color-dark-primary)] 
-           text-[var(--color-dark-primary)] font-medium
-           hover:bg-[var(--color-dark-primary)] hover:text-white 
+    @apply px-5 py-2.5 rounded-lg border border-[var(--color-primary)] 
+           text-[var(--color-primary)] font-medium
+           hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-foreground)]
            hover:shadow-[0_0_12px_rgba(196,30,58,0.35)] hover:border-transparent
            active:scale-[0.98] transition-all duration-300 cursor-pointer;
   }
   
   .panel-glass {
-    @apply bg-[var(--color-dark-card)]/70 backdrop-blur-xl 
-           border border-[var(--color-dark-border)]/40 rounded-2xl shadow-lg;
+    @apply bg-[var(--color-card)]/70 backdrop-blur-xl 
+           border border-[var(--color-border)]/40 rounded-2xl shadow-lg;
   }
   
   .card-donghua {
-    @apply bg-[var(--color-dark-card)] rounded-xl overflow-hidden 
-           border border-transparent
-           hover:border-[var(--color-dark-primary)]/50 
+    @apply bg-[var(--color-card)] rounded-xl overflow-hidden 
+           border border-[var(--color-border)]
+           hover:border-[var(--color-primary)]/50 
            hover:shadow-[0_8px_24px_rgba(0,0,0,0.7),0_0_16px_rgba(196,30,58,0.15)] 
            transition-all duration-300;
   }
 
   .progress-ink {
-    @apply h-1.5 w-full bg-[var(--color-dark-border)] rounded-full overflow-hidden;
+    @apply h-1.5 w-full bg-[var(--color-border)] rounded-full overflow-hidden;
   }
 
   .progress-fill {
-    @apply h-full bg-[var(--color-dark-primary)] transition-all duration-500;
+    @apply h-full bg-[var(--color-primary)] transition-all duration-500;
+  }
+
+  /* 🎢 Auto-scroll animation */
+  @keyframes auto-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-auto-scroll {
+    display: flex;
+    width: max-content;
+    animation: auto-scroll 60s linear infinite;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

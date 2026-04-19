@@ -24,7 +24,7 @@ export function HeroBanner({ series }: HeroBannerProps) {
       />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-background)] via-[var(--color-dark-background)]/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)]/40 to-transparent" />
 
       {/* Content */}
       <div className="relative h-full max-w-7xl mx-auto px-4 flex items-end pb-16">
@@ -45,18 +45,18 @@ export function HeroBanner({ series }: HeroBannerProps) {
           </div>
 
           {/* Title */}
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-[var(--color-dark-foreground)] leading-tight">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-[var(--color-foreground)] leading-tight">
             {series.title}
           </h1>
-          <p className="text-lg text-[var(--color-dark-accent)] font-medium">
+          <p className="text-lg text-[var(--color-accent)] font-medium">
             {series.chineseTitle}
           </p>
 
           {/* Meta */}
-          <div className="flex items-center gap-4 text-sm text-[var(--color-dark-muted-foreground)]">
+          <div className="flex items-center gap-4 text-sm text-[var(--color-muted-foreground)]">
             <span className="flex items-center gap-1">
               ⭐{" "}
-              <span className="text-[var(--color-dark-accent)]">
+              <span className="text-[var(--color-accent)]">
                 {series.rating}
               </span>
             </span>
@@ -88,9 +88,9 @@ export function HeroBanner({ series }: HeroBannerProps) {
             )}
 
             <button
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--color-dark-border)] 
-                             text-[var(--color-dark-foreground)] hover:bg-[var(--color-dark-secondary)] 
-                             hover:border-[var(--color-dark-primary)]/50 transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--color-border)] 
+                             text-[var(--color-foreground)] hover:bg-[var(--color-secondary)] 
+                             hover:border-[var(--color-primary)]/50 transition-all"
             >
               <Info className="w-4 h-4" />
               More Info

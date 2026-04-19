@@ -43,20 +43,20 @@ export default function SearchPage() {
   }, [query, fetchResults]);
 
   return (
-    <div className="min-h-screen bg-[var(--color-dark-background)]">
+    <div className="min-h-screen bg-[var(--color-background)]">
       <Navbar />
 
       <main className="pt-24 pb-12 px-4 max-w-7xl mx-auto">
         {/* Search Header */}
         <div className="flex items-center gap-4 mb-8">
-          <div className="p-3 bg-[var(--color-dark-primary)]/10 rounded-xl">
-            <Search className="w-6 h-6 text-[var(--color-dark-primary)]" />
+          <div className="p-3 bg-[var(--color-primary)]/10 rounded-xl">
+            <Search className="w-6 h-6 text-[var(--color-primary)]" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-[var(--color-dark-foreground)]">
+            <h1 className="text-2xl font-bold text-[var(--color-foreground)]">
               Search Results
             </h1>
-            <p className="text-[var(--color-dark-muted-foreground)]">
+            <p className="text-[var(--color-muted-foreground)]">
               {query
                 ? `Found ${results.length} results for "${query}"`
                 : "Type to search for donghua"}
@@ -67,8 +67,8 @@ export default function SearchPage() {
         {/* Loading State */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 text-[var(--color-dark-primary)] animate-spin mb-4" />
-            <p className="text-[var(--color-dark-muted-foreground)]">
+            <Loader2 className="w-10 h-10 text-[var(--color-primary)] animate-spin mb-4" />
+            <p className="text-[var(--color-muted-foreground)]">
               Searching our archives...
             </p>
           </div>
@@ -86,13 +86,13 @@ export default function SearchPage() {
         {/* Empty State */}
         {!loading && query && results.length === 0 && (
           <div className="panel-glass p-12 text-center max-w-md mx-auto">
-            <div className="flex justify-center mb-4 text-[var(--color-dark-muted-foreground)]">
+            <div className="flex justify-center mb-4 text-[var(--color-muted-foreground)]">
               <Search className="w-12 h-12" />
             </div>
-            <h3 className="text-lg font-semibold text-[var(--color-dark-foreground)] mb-2">
+            <h3 className="text-lg font-semibold text-[var(--color-foreground)] mb-2">
               No results found
             </h3>
-            <p className="text-[var(--color-dark-muted-foreground)]">
+            <p className="text-[var(--color-muted-foreground)]">
               We couldn't find any donghua matching "{query}". Try different
               keywords or check for typos.
             </p>
@@ -102,7 +102,7 @@ export default function SearchPage() {
         {/* Initial State */}
         {!loading && !query && (
           <div className="text-center py-20">
-            <p className="text-[var(--color-dark-muted-foreground)]">
+            <p className="text-[var(--color-muted-foreground)]">
               Start typing in the search bar above to explore our collection.
             </p>
           </div>

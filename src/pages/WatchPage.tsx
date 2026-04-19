@@ -113,7 +113,7 @@ export default function WatchPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[var(--color-dark-background)] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-background)] text-white flex items-center justify-center">
         Loading Preview...
       </div>
     );
@@ -121,7 +121,7 @@ export default function WatchPage() {
 
   if (!episode) {
     return (
-      <div className="min-h-screen bg-[var(--color-dark-background)] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-background)] text-white flex items-center justify-center">
         Episode not found
       </div>
     );
@@ -132,14 +132,14 @@ export default function WatchPage() {
   const isYouTube = episode.videoUrl?.includes("youtube");
 
   return (
-    <div className="min-h-screen bg-[var(--color-dark-background)] flex flex-col">
+    <div className="min-h-screen bg-[var(--color-background)] flex flex-col">
       <Navbar />
 
       {/* Back Button */}
       <div className="absolute top-20 left-4 z-20">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 px-4 py-2 bg-black/50 hover:bg-[var(--color-dark-primary)] text-white rounded-full backdrop-blur-md transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-black/50 hover:bg-[var(--color-primary)] text-white rounded-full backdrop-blur-md transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back
         </button>
@@ -147,7 +147,7 @@ export default function WatchPage() {
 
       {/* Preview Player */}
       <div className="flex-1 flex items-center justify-center bg-black p-4 pt-24 pb-8">
-        <div className="w-full max-w-6xl aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-[var(--color-dark-border)] relative">
+        <div className="w-full max-w-6xl aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-[var(--color-border)] relative">
           {isYouTube && previewUrl ? (
             <iframe
               src={previewUrl}
@@ -156,13 +156,13 @@ export default function WatchPage() {
               allowFullScreen
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-[var(--color-dark-muted-foreground)]">
+            <div className="w-full h-full flex items-center justify-center text-[var(--color-muted-foreground)]">
               Preview not available
             </div>
           )}
 
           {/* Preview Badge */}
-          <div className="absolute top-4 left-4 px-3 py-1.5 bg-[var(--color-dark-primary)]/90 text-white text-sm font-medium rounded-full backdrop-blur-sm flex items-center gap-2">
+          <div className="absolute top-4 left-4 px-3 py-1.5 bg-[var(--color-primary)]/90 text-white text-sm font-medium rounded-full backdrop-blur-sm flex items-center gap-2">
             <Clock className="w-4 h-4" />
             1-Min Preview
           </div>
@@ -173,10 +173,10 @@ export default function WatchPage() {
       <div className="max-w-6xl mx-auto w-full px-4 pb-12 space-y-6">
         {/* Title & Meta */}
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-dark-foreground)]">
+          <h1 className="text-2xl font-bold text-[var(--color-foreground)]">
             {episode.title}
           </h1>
-          <p className="text-[var(--color-dark-muted-foreground)] mt-1">
+          <p className="text-[var(--color-muted-foreground)] mt-1">
             {episode.seriesTitle} • Season {episode.seasonOrder} • Episode{" "}
             {episode.episodeNumber}
           </p>
@@ -187,14 +187,14 @@ export default function WatchPage() {
           {episode.prevEpisodeId ? (
             <Link
               to={`/watch/${episode.prevEpisodeId}`}
-              className="px-4 py-2 bg-[var(--color-dark-secondary)] hover:bg-[var(--color-dark-secondary)]/80 rounded-lg text-[var(--color-dark-foreground)] transition-colors"
+              className="px-4 py-2 bg-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/80 rounded-lg text-[var(--color-foreground)] transition-colors"
             >
               ← Previous
             </Link>
           ) : (
             <button
               disabled
-              className="px-4 py-2 bg-[var(--color-dark-secondary)]/50 rounded-lg text-[var(--color-dark-muted-foreground)] cursor-not-allowed"
+              className="px-4 py-2 bg-[var(--color-secondary)]/50 rounded-lg text-[var(--color-muted-foreground)] cursor-not-allowed"
             >
               ← Previous
             </button>
@@ -203,14 +203,14 @@ export default function WatchPage() {
           {episode.nextEpisodeId ? (
             <Link
               to={`/watch/${episode.nextEpisodeId}`}
-              className="px-4 py-2 bg-[var(--color-dark-primary)] hover:bg-[var(--color-dark-primary)]/80 rounded-lg text-white transition-colors"
+              className="px-4 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/80 rounded-lg text-white transition-colors"
             >
               Next →
             </Link>
           ) : (
             <button
               disabled
-              className="px-4 py-2 bg-[var(--color-dark-primary)]/50 rounded-lg text-white/50 cursor-not-allowed"
+              className="px-4 py-2 bg-[var(--color-primary)]/50 rounded-lg text-white/50 cursor-not-allowed"
             >
               Next →
             </button>
@@ -218,7 +218,7 @@ export default function WatchPage() {
         </div>
 
         {/* Description Placeholder */}
-        <p className="text-[var(--color-dark-muted-foreground)] leading-relaxed">
+        <p className="text-[var(--color-muted-foreground)] leading-relaxed">
           This is a 1-minute preview. Continue watching the full episode on
           YouTube.
         </p>
@@ -235,7 +235,7 @@ export default function WatchPage() {
         </a>
 
         {/* Helpful Note */}
-        <p className="text-xs text-[var(--color-dark-muted-foreground)] text-center">
+        <p className="text-xs text-[var(--color-muted-foreground)] text-center">
           Clicking above will open YouTube in a new tab. Support the creators by
           watching on their official channel! 🎌
         </p>

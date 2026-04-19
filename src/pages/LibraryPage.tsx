@@ -62,29 +62,29 @@ export default function LibraryPage() {
   if (error) return <div className="p-8 text-red-400">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-[var(--color-dark-background)]">
+    <div className="min-h-screen bg-[var(--color-background)]">
       <Navbar />
 
       <main className="pt-20 pb-12 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="font-display text-3xl font-bold text-[var(--color-dark-foreground)]">
+            <h1 className="font-display text-3xl font-bold text-[var(--color-foreground)]">
               My Library
             </h1>
-            <p className="text-[var(--color-dark-muted-foreground)] mt-1">
+            <p className="text-[var(--color-muted-foreground)] mt-1">
               Your favorites and watch history
             </p>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 mb-6 border-b border-[var(--color-dark-border)]">
+          <div className="flex gap-2 mb-6 border-b border-[var(--color-border)]">
             <button
               onClick={() => setActiveTab("favorites")}
               className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
                 activeTab === "favorites"
-                  ? "text-[var(--color-dark-primary)] border-b-2 border-[var(--color-dark-primary)]"
-                  : "text-[var(--color-dark-muted-foreground)] hover:text-[var(--color-dark-foreground)]"
+                  ? "text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]"
+                  : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
               }`}
             >
               <Heart className="w-4 h-4" />
@@ -94,8 +94,8 @@ export default function LibraryPage() {
               onClick={() => setActiveTab("history")}
               className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
                 activeTab === "history"
-                  ? "text-[var(--color-dark-primary)] border-b-2 border-[var(--color-dark-primary)]"
-                  : "text-[var(--color-dark-muted-foreground)] hover:text-[var(--color-dark-foreground)]"
+                  ? "text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]"
+                  : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
               }`}
             >
               <Clock className="w-4 h-4" />
@@ -144,20 +144,20 @@ export default function LibraryPage() {
 // Skeleton Loader Component
 function LibrarySkeleton() {
   return (
-    <div className="min-h-screen bg-[var(--color-dark-background)]">
+    <div className="min-h-screen bg-[var(--color-background)]">
       <Navbar />
       <div className="pt-20 pb-12 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="h-8 w-48 bg-[var(--color-dark-secondary)] rounded animate-pulse mb-8" />
+          <div className="h-8 w-48 bg-[var(--color-secondary)] rounded animate-pulse mb-8" />
           <div className="flex gap-2 mb-6">
-            <div className="h-10 w-32 bg-[var(--color-dark-secondary)] rounded animate-pulse" />
-            <div className="h-10 w-40 bg-[var(--color-dark-secondary)] rounded animate-pulse" />
+            <div className="h-10 w-32 bg-[var(--color-secondary)] rounded animate-pulse" />
+            <div className="h-10 w-40 bg-[var(--color-secondary)] rounded animate-pulse" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="aspect-[3/4] bg-[var(--color-dark-secondary)] rounded-xl animate-pulse"
+                className="aspect-[3/4] bg-[var(--color-secondary)] rounded-xl animate-pulse"
               />
             ))}
           </div>
@@ -183,13 +183,13 @@ function EmptyState({
 }) {
   return (
     <div className="panel-glass p-12 text-center">
-      <div className="flex justify-center mb-4 text-[var(--color-dark-muted-foreground)]">
+      <div className="flex justify-center mb-4 text-[var(--color-muted-foreground)]">
         {icon}
       </div>
-      <h3 className="text-lg font-semibold text-[var(--color-dark-foreground)] mb-2">
+      <h3 className="text-lg font-semibold text-[var(--color-foreground)] mb-2">
         {title}
       </h3>
-      <p className="text-[var(--color-dark-muted-foreground)] mb-6">
+      <p className="text-[var(--color-muted-foreground)] mb-6">
         {description}
       </p>
       <button onClick={onAction} className="btn-crimson">
@@ -212,7 +212,7 @@ function HistoryItem({ progress }: { progress: UserProgress }) {
 
   return (
     <div
-      className="panel-glass p-4 flex gap-4 hover:border-[var(--color-dark-primary)]/50 transition-colors cursor-pointer"
+      className="panel-glass p-4 flex gap-4 hover:border-[var(--color-primary)]/50 transition-colors cursor-pointer"
       onClick={() => navigate(`/watch/${progress.episodeId}`)}
     >
       {/* Cover Image */}
@@ -224,16 +224,16 @@ function HistoryItem({ progress }: { progress: UserProgress }) {
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <h4 className="font-semibold text-[var(--color-dark-foreground)] truncate">
+        <h4 className="font-semibold text-[var(--color-foreground)] truncate">
           {progress.seriesTitle}
         </h4>
-        <p className="text-sm text-[var(--color-dark-muted-foreground)]">
+        <p className="text-sm text-[var(--color-muted-foreground)]">
           Episode {progress.episodeNumber}: {progress.episodeTitle}
         </p>
 
         {/* Progress Bar */}
         <div className="mt-3">
-          <div className="flex justify-between text-xs text-[var(--color-dark-muted-foreground)] mb-1">
+          <div className="flex justify-between text-xs text-[var(--color-muted-foreground)] mb-1">
             <span>{Math.floor(watched / 60)}m watched</span>
             <span>{percent}%</span>
           </div>
@@ -243,7 +243,7 @@ function HistoryItem({ progress }: { progress: UserProgress }) {
         </div>
 
         {/* Meta */}
-        <div className="flex items-center gap-3 mt-2 text-xs text-[var(--color-dark-muted-foreground)]">
+        <div className="flex items-center gap-3 mt-2 text-xs text-[var(--color-muted-foreground)]">
           <span>{new Date(progress.lastWatchedAt).toLocaleDateString()}</span>
           {progress.isCompleted && (
             <span className="text-green-500 flex items-center gap-1">

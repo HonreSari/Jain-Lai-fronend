@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { HeroBanner } from "@/components/home/HeroBanner";
 import { SeriesGrid } from "@/components/home/SeriesGrid";
+import { MovingSlider } from "@/components/home/MovingSlider";
+import { RankedSlider } from "@/components/home/RankedSlider";
 import api from "@/lib/api";
 import type { Series } from "@/types";
 import { getGenreColor } from "@/lib/genre-colors";
@@ -41,7 +43,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--color-dark-background)]">
+    <div className="min-h-screen bg-[var(--color-background)]">
       <Navbar />
 
       <main className="pt-16">
@@ -55,8 +57,8 @@ export default function Home() {
               className={`px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
                 ${
                   selectedGenre === null
-                    ? "bg-[var(--color-dark-primary)] text-white shadow-[0_0_12px_rgba(196,30,58,0.3)]"
-                    : "bg-[var(--color-dark-secondary)] text-[var(--color-dark-muted-foreground)] hover:bg-[var(--color-dark-secondary)]/80"
+                    ? "bg-[var(--color-primary)] text-white shadow-[0_0_12px_rgba(196,30,58,0.3)]"
+                    : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] hover:bg-[var(--color-secondary)]/80"
                 }`}
             >
               All
@@ -72,7 +74,7 @@ export default function Home() {
                     ${
                       isSelected
                         ? `${colors.bg} ${colors.text} ${colors.border} shadow-md`
-                        : "bg-[var(--color-dark-secondary)] text-[var(--color-dark-muted-foreground)] border-transparent hover:bg-[var(--color-dark-secondary)]/80"
+                        : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] border-transparent hover:bg-[var(--color-secondary)]/80"
                     }`}
                 >
                   {genre}
@@ -95,21 +97,23 @@ export default function Home() {
                 title="🔥 Trending Now"
                 endpoint="/series?page=0&size=12"
               />
-              <SeriesGrid
+              
+              <MovingSlider
                 title="🆕 Recently Updated"
-                endpoint="/series?page=0&size=12"
+                endpoint="/series?page=0&size=10&sortBy=updatedAt&direction=desc"
               />
-              <SeriesGrid
-                title="⭐ Top Rated"
-                endpoint="/series?page=0&size=12"
+
+              <RankedSlider
+                title="⭐ Top Rated Masterpieces"
+                endpoint="/series?page=0&size=10&sortBy=rating&direction=desc"
               />
             </>
           )}
         </div>
       </main>
 
-      <footer className="py-8 px-4 border-t border-[var(--color-dark-border)]/40 mt-16">
-        <div className="max-w-7xl mx-auto text-center text-sm text-[var(--color-dark-muted-foreground)]">
+      <footer className="py-8 px-4 border-t border-[var(--color-border)]/40 mt-16">
+        <div className="max-w-7xl mx-auto text-center text-sm text-[var(--color-muted-foreground)]">
           <p>🗡️ Sword of Coming • Donghua Streaming • School Project 2026</p>
         </div>
       </footer>

@@ -33,14 +33,14 @@ export function SeriesGrid({ title, endpoint }: SeriesGridProps) {
   if (loading) {
     return (
       <section className="py-8 px-4">
-        <h2 className="font-display text-2xl font-bold text-[var(--color-dark-foreground)] mb-6">
+        <h2 className="font-display text-2xl font-bold text-[var(--color-foreground)] mb-6">
           {title}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="aspect-[3/4] bg-[var(--color-dark-secondary)] rounded-xl animate-pulse"
+              className="aspect-[3/4] bg-[var(--color-secondary)] rounded-xl animate-pulse"
             />
           ))}
         </div>
@@ -51,10 +51,10 @@ export function SeriesGrid({ title, endpoint }: SeriesGridProps) {
   if (error) {
     return (
       <section className="py-8 px-4">
-        <h2 className="font-display text-2xl font-bold text-[var(--color-dark-foreground)] mb-6">
+        <h2 className="font-display text-2xl font-bold text-[var(--color-foreground)] mb-6">
           {title}
         </h2>
-        <p className="text-[var(--color-dark-muted-foreground)]">{error}</p>
+        <p className="text-[var(--color-muted-foreground)]">{error}</p>
       </section>
     );
   }
@@ -62,7 +62,7 @@ export function SeriesGrid({ title, endpoint }: SeriesGridProps) {
   return (
     <section className="py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="font-display text-2xl font-bold text-[var(--color-dark-foreground)] mb-6">
+        <h2 className="font-display text-2xl font-bold text-[var(--color-foreground)] mb-6">
           {title}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">

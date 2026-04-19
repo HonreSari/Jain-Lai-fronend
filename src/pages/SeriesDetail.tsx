@@ -109,13 +109,13 @@ export default function SeriesDetail() {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-[var(--color-dark-background)] flex items-center justify-center text-[var(--color-dark-muted-foreground)]">
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center text-[var(--color-muted-foreground)]">
         Loading series...
       </div>
     );
   if (error || !series)
     return (
-      <div className="min-h-screen bg-[var(--color-dark-background)] flex items-center justify-center text-red-400">
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center text-red-400">
         {error || "Series not found"}
       </div>
     );
@@ -128,7 +128,7 @@ export default function SeriesDetail() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--color-dark-background)]">
+    <div className="min-h-screen bg-[var(--color-background)]">
       <Navbar />
 
       {/* Hero Banner */}
@@ -140,7 +140,7 @@ export default function SeriesDetail() {
             filter: "brightness(0.4)",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-background)] via-[var(--color-dark-background)]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-background)] via-[var(--color-background)]/50 to-transparent" />
 
         <div className="relative h-full max-w-7xl mx-auto px-4 flex items-end pb-8">
           <div className="space-y-4 max-w-2xl">
@@ -160,17 +160,17 @@ export default function SeriesDetail() {
             </div>
 
             {/* Title */}
-            <h1 className="font-display text-4xl font-bold text-[var(--color-dark-foreground)]">
+            <h1 className="font-display text-4xl font-bold text-[var(--color-foreground)]">
               {series.title}
             </h1>
-            <p className="text-lg text-[var(--color-dark-accent)]">
+            <p className="text-lg text-[var(--color-accent)]">
               {series.chineseTitle}
             </p>
 
             {/* Meta */}
-            <div className="flex items-center gap-4 text-sm text-[var(--color-dark-muted-foreground)]">
+            <div className="flex items-center gap-4 text-sm text-[var(--color-muted-foreground)]">
               <span className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-[var(--color-dark-accent)]" />
+                <Star className="w-4 h-4 text-[var(--color-accent)]" />
                 {series.rating}
               </span>
               <span className="flex items-center gap-1">
@@ -184,13 +184,13 @@ export default function SeriesDetail() {
             </div>
 
             {/* Description */}
-            <p className="text-[var(--color-dark-muted-foreground)] leading-relaxed line-clamp-3 md:line-clamp-4">
+            <p className="text-[var(--color-muted-foreground)] leading-relaxed line-clamp-3 md:line-clamp-4">
               {series.description || "No description available."}
             </p>
 
             {/* ✅ Simple Feedback Message */}
             {libraryMessage && (
-              <div className="flex items-center gap-2 text-sm text-[var(--color-dark-accent)] bg-[var(--color-dark-secondary)]/50 px-4 py-2 rounded-lg border border-[var(--color-dark-border)]">
+              <div className="flex items-center gap-2 text-sm text-[var(--color-accent)] bg-[var(--color-secondary)]/50 px-4 py-2 rounded-lg border border-[var(--color-border)]">
                 <CheckCircle className="w-4 h-4" />
                 {libraryMessage}
               </div>
@@ -215,8 +215,8 @@ export default function SeriesDetail() {
                 className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border font-medium transition-all
                   ${
                     inLibrary
-                      ? "bg-[var(--color-dark-primary)] border-[var(--color-dark-primary)] text-white hover:bg-[var(--color-dark-primary)]/90"
-                      : "border-[var(--color-dark-border)] text-[var(--color-dark-foreground)] hover:border-[var(--color-dark-primary)] hover:bg-[var(--color-dark-secondary)]"
+                      ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-white hover:bg-[var(--color-primary)]/90"
+                      : "border-[var(--color-border)] text-[var(--color-foreground)] hover:border-[var(--color-primary)] hover:bg-[var(--color-secondary)]"
                   } disabled:opacity-60 disabled:cursor-not-allowed`}
               >
                 {libraryLoading ? (
@@ -238,7 +238,7 @@ export default function SeriesDetail() {
         {/* Season Tabs */}
         {series.seasons && series.seasons.length > 0 && (
           <div className="space-y-4">
-            <h2 className="font-display text-2xl font-bold text-[var(--color-dark-foreground)]">
+            <h2 className="font-display text-2xl font-bold text-[var(--color-foreground)]">
               Episodes
             </h2>
 
@@ -251,8 +251,8 @@ export default function SeriesDetail() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap
                     ${
                       activeSeasonIdx === idx
-                        ? "bg-[var(--color-dark-primary)] text-white"
-                        : "bg-[var(--color-dark-secondary)] text-[var(--color-dark-muted-foreground)] hover:bg-[var(--color-dark-secondary)]/80"
+                        ? "bg-[var(--color-primary)] text-white"
+                        : "bg-[var(--color-secondary)] text-[var(--color-muted-foreground)] hover:bg-[var(--color-secondary)]/80"
                     }`}
                 >
                   {s.seasonName}
@@ -266,13 +266,13 @@ export default function SeriesDetail() {
                 <Link
                   key={ep.id}
                   to={`/watch/${ep.id}`}
-                  className="group bg-[var(--color-dark-secondary)] rounded-md border border-[var(--color-dark-border)] 
-                             hover:border-[var(--color-dark-primary)] hover:shadow-[0_0_10px_rgba(196,30,58,0.2)] transition-all flex flex-col items-center justify-center py-2 px-1 text-center"
+                  className="group bg-[var(--color-secondary)] rounded-md border border-[var(--color-border)] 
+                             hover:border-[var(--color-primary)] hover:shadow-[0_0_10px_rgba(196,30,58,0.2)] transition-all flex flex-col items-center justify-center py-2 px-1 text-center"
                 >
-                  <span className="text-sm font-bold text-[var(--color-dark-foreground)] group-hover:text-[var(--color-dark-primary)]">
+                  <span className="text-sm font-bold text-[var(--color-foreground)] group-hover:text-[var(--color-primary)]">
                     {ep.episodeNumber}
                   </span>
-                  <span className="text-[10px] text-[var(--color-dark-muted-foreground)] mt-0.5 line-clamp-1">
+                  <span className="text-[10px] text-[var(--color-muted-foreground)] mt-0.5 line-clamp-1">
                     EP
                   </span>
                 </Link>

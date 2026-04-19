@@ -22,7 +22,7 @@ export function DonghuaCard({ series }: DonghuaCardProps) {
 
         {/* Hover Overlay */}
         <div
-          className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-background)]/90 via-transparent to-transparent 
+          className="absolute inset-0 bg-gradient-to-t from-[var(--color-background)]/90 via-transparent to-transparent 
                         opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4"
         >
           <button className="btn-crimson flex items-center justify-center gap-2 w-full mb-3">
@@ -34,7 +34,7 @@ export function DonghuaCard({ series }: DonghuaCardProps) {
         {/* Status Badge */}
         <span
           className="absolute top-2 right-2 px-2 py-1 text-xs font-medium 
-                        bg-[var(--color-dark-primary)] text-white rounded-md backdrop-blur-sm"
+                        bg-[var(--color-primary)] text-white rounded-md backdrop-blur-sm"
         >
           {series.status}
         </span>
@@ -42,7 +42,7 @@ export function DonghuaCard({ series }: DonghuaCardProps) {
         {/* Rating Badge */}
         <span
           className="absolute top-2 left-2 px-2 py-1 text-xs font-medium 
-                        bg-[var(--color-dark-accent)]/90 text-[var(--color-dark-background)] rounded-md backdrop-blur-sm"
+                        bg-[var(--color-accent)]/90 text-[var(--color-background)] rounded-md backdrop-blur-sm"
         >
           ⭐ {series.rating}
         </span>
@@ -50,20 +50,20 @@ export function DonghuaCard({ series }: DonghuaCardProps) {
 
       {/* Info */}
       <div className="p-4 space-y-2">
-        <h3 className="font-semibold text-[var(--color-dark-foreground)] group-hover:text-[var(--color-dark-primary)] transition-colors truncate">
+        <h3 className="font-semibold text-[var(--color-foreground)] group-hover:text-[var(--color-primary)] transition-colors truncate">
           {series.title}
         </h3>
-        <p className="text-sm text-[var(--color-dark-muted-foreground)] truncate">
+        <p className="text-sm text-[var(--color-muted-foreground)] truncate">
           {series.chineseTitle}
         </p>
         <div className="flex items-center justify-between text-xs">
-          <span className="text-[var(--color-dark-muted-foreground)]">{series.totalEpisodes} EP</span>
+          <span className="text-[var(--color-muted-foreground)]">{series.totalEpisodes} EP</span>
           {series.genres?.[0] ? (
             <span className={`px-2 py-0.5 border rounded-md font-medium ${getGenreColor(series.genres[0]).bg} ${getGenreColor(series.genres[0]).text} ${getGenreColor(series.genres[0]).border}`}>
               {series.genres[0]}
             </span>
           ) : (
-            <span className="text-[var(--color-dark-muted-foreground)]">Unknown</span>
+            <span className="text-[var(--color-muted-foreground)]">Unknown</span>
           )}
         </div>
       </div>

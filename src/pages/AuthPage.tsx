@@ -44,19 +44,19 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-dark-background)] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center p-4">
       <div className="panel-glass w-full max-w-md p-8 space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-[var(--color-dark-primary)]/10 rounded-full">
-              <Sword className="w-8 h-8 text-[var(--color-dark-primary)]" />
+            <div className="p-3 bg-[var(--color-primary)]/10 rounded-full">
+              <Sword className="w-8 h-8 text-[var(--color-primary)]" />
             </div>
           </div>
-          <h1 className="font-display text-3xl font-bold text-[var(--color-dark-foreground)]">
+          <h1 className="font-display text-3xl font-bold text-[var(--color-foreground)]">
             Sword of Coming
           </h1>
-          <p className="text-[var(--color-dark-muted-foreground)]">
+          <p className="text-[var(--color-muted-foreground)]">
             {isLogin ? "Welcome back, cultivator" : "Begin your cultivation journey"}
           </p>
         </div>
@@ -64,47 +64,47 @@ export default function AuthPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-[var(--color-dark-muted-foreground)] mb-1">Username</label>
+            <label className="block text-sm font-medium text-[var(--color-muted-foreground)] mb-1">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2.5 bg-[var(--color-dark-secondary)] border border-[var(--color-dark-border)] rounded-lg 
-                         text-[var(--color-dark-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-dark-primary)] focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-[var(--color-secondary)] border border-[var(--color-border)] rounded-lg 
+                         text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
               required
             />
           </div>
 
           {!isLogin && (
             <div>
-              <label className="block text-sm font-medium text-[var(--color-dark-muted-foreground)] mb-1">Email</label>
+              <label className="block text-sm font-medium text-[var(--color-muted-foreground)] mb-1">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 bg-[var(--color-dark-secondary)] border border-[var(--color-dark-border)] rounded-lg 
-                           text-[var(--color-dark-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-dark-primary)] focus:border-transparent"
+                className="w-full px-4 py-2.5 bg-[var(--color-secondary)] border border-[var(--color-border)] rounded-lg 
+                           text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
                 required={!isLogin}
               />
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[var(--color-dark-muted-foreground)] mb-1">Password</label>
+            <label className="block text-sm font-medium text-[var(--color-muted-foreground)] mb-1">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 pr-10 bg-[var(--color-dark-secondary)] border border-[var(--color-dark-border)] rounded-lg 
-                           text-[var(--color-dark-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-dark-primary)] focus:border-transparent"
+                className="w-full px-4 py-2.5 pr-10 bg-[var(--color-secondary)] border border-[var(--color-border)] rounded-lg 
+                           text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
                 required
                 minLength={4}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-dark-muted-foreground)] hover:text-[var(--color-dark-foreground)]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -123,11 +123,11 @@ export default function AuthPage() {
         </form>
 
         {/* Toggle */}
-        <p className="text-center text-sm text-[var(--color-dark-muted-foreground)]">
+        <p className="text-center text-sm text-[var(--color-muted-foreground)]">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <Link
             to={isLogin ? "/register" : "/login"}
-            className="text-[var(--color-dark-primary)] hover:text-[var(--color-dark-accent)] font-medium transition-colors"
+            className="text-[var(--color-primary)] hover:text-[var(--color-accent)] font-medium transition-colors"
           >
             {isLogin ? "Register" : "Login"}
           </Link>
